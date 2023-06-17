@@ -17,6 +17,10 @@ struct AddBookView: View {
     @State private var genre = ""
     @State private var review = ""
     
+    private var disabled: Bool {
+        return !title.isEmpty && !author.isEmpty && !review.isEmpty
+    }
+    
     let genres = ["Fantasy", "Horror", "Kids", "Mystery", "Poetry", "Romance", "Thriller"]
     
     var body: some View {
@@ -52,13 +56,20 @@ struct AddBookView: View {
                         newBook.genre = genre
                         newBook.review = review
                         
-                        try? moc.save()
-                        dismiss()
+                        if disabled {
+                            try? moc.save()
+                            dismiss()
+                        }
                     }
                 }
+                .disabled(!disabled)
             }
             .navigationTitle("Add book")
         }
+    }
+    
+    func validateFields() {
+        
     }
 }
 
